@@ -1,1 +1,65 @@
-<p>home works!</p>
+<div class="container">
+  <div class="header">
+    <h2>NOVA AI TECH</h2>
+    <div class="search-bar">
+      <input type="text" placeholder="Search By Name" [(ngModel)]="searchName" />
+      <button (click)="search()">GO</button>
+    </div>
+    <p class="search-result">{{ searchResult }}</p>
+  </div>
+
+  <div *ngIf="matchedUsers.length > 0" class="results">
+    <h4>Results:</h4>
+    <ul>
+      <li *ngFor="let user of matchedUsers">
+        <strong>{{ user.name }}</strong> — {{ user.address }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-section">
+    <div class="form-left">
+      <label>First Name:</label>
+      <input [(ngModel)]="form.firstName" />
+      <label>Middle Name:</label>
+      <input [(ngModel)]="form.middleName" />
+      <label>Last Name:</label>
+      <input [(ngModel)]="form.lastName" />
+      <label>Address:</label>
+      <input [(ngModel)]="form.address" />
+      <label>Additional Info:</label>
+      <textarea [(ngModel)]="form.additionalInfo"></textarea>
+    </div>
+
+    <div class="form-right">
+      <ng-container *ngIf="!capturedImage">
+        <video #video autoplay muted></video>
+        <button (click)="captureImage()">Capture</button>
+      </ng-container>
+
+      <ng-container *ngIf="capturedImage && !showCropper">
+        <img [src]="capturedImage" />
+        <div class="img-controls">
+          <button (click)="editImage()">Edit</button>
+          <button (click)="retakeImage()">Retake</button>
+          <button (click)="submit()">Submit</button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <canvas #canvas hidden></canvas>
+</div>
+
+<!-- Cropper Modal -->
+<div class="modal" *ngIf="showCropper">
+  <div class="modal-backdrop" (click)="cancelCrop()"></div>
+  <div class="modal-content">
+    <img #croppingImage [src]="capturedImage" />
+    <div class="controls">
+      <button (click)="rotateImage()">Rotate</button>
+      <button (click)="applyCrop()">Crop</button>
+      <button (click)="cancelCrop()">Cancel</button>
+    </div>
+  </div>
+</div>
